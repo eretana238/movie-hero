@@ -12,8 +12,9 @@ class MyApp extends StatelessWidget {
       title: 'Movie Hero',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFF2E43FF),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Lato'
       ),
       home: HomeScreen(),
     );

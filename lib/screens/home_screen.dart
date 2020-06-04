@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_hero/components/movie_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -10,6 +11,7 @@ class HomeScreen extends StatelessWidget {
           leading: IconButton(
             icon: Icon(
               Icons.apps,
+              size: 26.0,
               color: Colors.black,
             ),
             onPressed: () => print('pressed apps'),
@@ -18,18 +20,22 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 28.0,
-                  ),
-                  onPressed: () => print('pressed add'),
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                  size: 28.0,
+                ),
+                onPressed: () => print('pressed add'),
               ),
             ),
           ],
         ),
         body: SafeArea(
-          child: Container(),
+          child: ListView(
+            children: <Widget>[
+              MovieCarousel(),
+            ],
+          ),
         ));
   }
 }
