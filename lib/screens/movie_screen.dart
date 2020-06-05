@@ -4,24 +4,18 @@ class MovieScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff101010),
       appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 26.0,
-              color: Colors.black,
-            ),
-            onPressed: () => print('pressed back'),
+        backgroundColor: Color(0xff101010),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
           ),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: SafeArea(
-          child: ListView(
-            addAutomaticKeepAlives: false,
-            controller: ScrollController(initialScrollOffset: 10.0),
-          ),
-        ),
+      ),
+      body: Text('hello'),
     );
   }
 }

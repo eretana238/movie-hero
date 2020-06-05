@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_hero/screens/home_screen.dart';
+import 'package:movie_hero/screens/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Lato'
       ),
-      home: HomeScreen(),
+      home: Home(),
     );
   }
 }
