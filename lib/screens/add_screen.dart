@@ -109,7 +109,7 @@ class _AddScreenState extends State<AddScreen> {
                       */
                       if (_formKey.currentState.validate()) {
                         _fetchMovie.setTitle('${titleController.text} ${yearController.text}');
-                        print(_fetchMovie.parseTitle());
+                        _fetchMovie.getImage();
                       }
                     },
                     child: Row(
