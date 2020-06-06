@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_hero/models/movie.dart';
-import 'package:movie_hero/screens/movie_screen.dart';
+import 'package:movie_hero/screens/movie_info_screen.dart';
 
 class MovieCarousel extends StatelessWidget {
   String _title;
@@ -52,7 +51,7 @@ class MovieCarousel extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => MovieScreen(),
+                    builder: (_) => MovieInfoScreen(),
                   ),
                 ),
                 child: Container(

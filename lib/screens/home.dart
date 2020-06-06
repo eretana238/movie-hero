@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:movie_hero/screens/home_screen.dart';
-import 'package:movie_hero/screens/movie_screen.dart';
+import 'package:movie_hero/screens/add_screen.dart';
+import 'package:movie_hero/screens/movies_screen.dart';
+import 'package:movie_hero/screens/search_screen.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-   int _selectedIndex = 0;
-   
+  int _selectedIndex = 0;
+
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    MovieScreen(),
+    MoviesScreen(),
+    SearchScreen(),
     Text('Settings'),
   ];
 
@@ -20,8 +22,8 @@ class _HomeState extends State<Home> {
       _selectedIndex = index;
     });
   }
-  
-   @override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff101010),
@@ -37,15 +39,19 @@ class _HomeState extends State<Home> {
                 color: Colors.white,
                 size: 28.0,
               ),
-              onPressed: () => print('pressed add'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AddScreen(),
+                ),
+              ),
             ),
           ),
         ],
       ),
-      body:  _widgetOptions.elementAt(_selectedIndex),
-      
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff101010),
+        backgroundColor: Color(0xff0c0c0c),
         unselectedItemColor: Colors.white24,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -68,4 +74,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
