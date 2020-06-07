@@ -1,20 +1,23 @@
 import 'package:http/http.dart' as http;
-import 'dart:io' show File;
-import 'dart:convert' show json;
-// import 'package:html/dom.dart';
-// import 'package:html/dom_parsing.dart';
-// import 'package:html/parser.dart' as parser;
+import 'package:movie_hero/models/keys.dart';
 
 
 class FetchMovie{
-  final String _imagesURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&imgSize=MEDIUM&q=$_query&searchType=image&key=$_key';
-  // final String _castURL = "https://www.google.com/search?q=";
+  /*
+  * class Keys contains api secret keys to make http requests
+  * cx = searchEngineId
+  * key = customSearchKey
+  */
+  static Keys keys = Keys();
 
   static FetchMovie _instance;
-  String _title;
-  String _query;
-  static String _cx;
-  static String _key;
+
+  static String _title;
+  static String _cx = keys.searchEngineId;
+  static String _key = keys.customSearchKey;
+
+  final String _imagesURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&imgSize=MEDIUM&q=$_title&searchType=image&key=$_key';
+  final String _castURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&q=$_title&key=$_key';
   
   FetchMovie._();
 
@@ -26,27 +29,41 @@ class FetchMovie{
   /*
   * Makes regular title in the google query string format: (Hello+world+2)
   */
-  String parseTitle() {
-    List<String> splitTitle = _title.split(' ');
-    _query = '';
+  void _parseTitle() {
+    var splitTitle = _title.split(' ');
+    _title = '';
     splitTitle.forEach((element) {
-      _query += '$element%20';
+      _title += '$element\%20';
     });
-    _query += 'poster';
-    return _query;
+    _title += 'poster';
+    print(_title);
   }
 
-  void setTitle(String title) {
-    _title = _title;
-    parseTitle();
-  }
-
-  void setJSONKeys() async{
-    Map x = await json.decode(await new File('../keys.json').readAsString());
+  set title(String title) {
+    _title = title;
+    _parseTitle();
   }
 
   Future<String> getImage() async{
-    var response = await http.get('$_imagesURL');
+    var response = await http.get(
+      '$_imagesURL',
+      headers: {'Accept': 'application/json'}
+    );
+    if(response.statusCode == 200){
+      print(response.body);
+      return '';
+    }
+    else {
+      print('Request failed with status: ${response.statusCode}.');
+      return null;
+    }
+  }
+
+  Future<String> getCast() async{
+    var response = await http.get(
+      '$_castURL',
+      headers: {'Accept': 'application/json'}
+    );
     if(response.statusCode == 200){
       print(response.body);
       return '';

@@ -108,7 +108,7 @@ class _AddScreenState extends State<AddScreen> {
                       * Checks if all fields are filled, then starts making http requests
                       */
                       if (_formKey.currentState.validate()) {
-                        _fetchMovie.setTitle('${titleController.text} ${yearController.text}');
+                        _fetchMovie.title = '${titleController.text} ${yearController.text}';
                         _fetchMovie.getImage();
                       }
                     },
