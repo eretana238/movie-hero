@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:movie_hero/models/keys.dart';
+import 'dart:convert' show json;
 
 
 class FetchMovie{
@@ -16,7 +17,6 @@ class FetchMovie{
   static String _cx = keys.searchEngineId;
   static String _key = keys.customSearchKey;
 
-  final String _imagesURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&imgSize=MEDIUM&q=$_title&searchType=image&key=$_key';
   final String _castURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&q=$_title&key=$_key';
   
   FetchMovie._();
@@ -44,13 +44,16 @@ class FetchMovie{
   }
 
   Future<String> getImage() async{
+    final String _imagesURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&imgSize=MEDIUM&q=$_title&searchType=image&key=$_key';
+
     var response = await http.get(
       _imagesURL,
       headers: {'Accept': 'application/json'}
     );
     if(response.statusCode == 200){
-      print(response.body);
-      return '';
+      var res = response.body;
+      var data = json.decode(res);
+      return data['items'][0]['link'].toString();
     }
     else {
       print('Request failed with status: ${response.statusCode}.');
