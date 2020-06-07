@@ -36,7 +36,6 @@ class FetchMovie{
       _title += '$element\%20';
     });
     _title += 'poster';
-    print(_title);
   }
 
   set title(String title) {
@@ -46,7 +45,7 @@ class FetchMovie{
 
   Future<String> getImage() async{
     var response = await http.get(
-      '$_imagesURL',
+      _imagesURL,
       headers: {'Accept': 'application/json'}
     );
     if(response.statusCode == 200){
@@ -61,7 +60,7 @@ class FetchMovie{
 
   Future<String> getCast() async{
     var response = await http.get(
-      '$_castURL',
+      _castURL,
       headers: {'Accept': 'application/json'}
     );
     if(response.statusCode == 200){
