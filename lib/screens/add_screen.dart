@@ -16,6 +16,9 @@ class _AddScreenState extends State<AddScreen> {
 
   String dropdownValue = 'Action-Adventure';
 
+  // Future<void> _addDocument 
+  // TODO : start adding new documents in collections
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -122,18 +125,9 @@ class _AddScreenState extends State<AddScreen> {
                       });
                     },
                     items: <String>[
-                      'Action-Adventure',
-                      'Comedy',
-                      'Crime',
-                      'Drama',
-                      'Epics',
-                      'Horror',
-                      'Musicals',
-                      'Sci-fi',
-                      'Thrillers',
-                      'War',
-                      'Westerns'
-                    ].map<DropdownMenuItem<String>>((String value) {
+                      'Action-Adventure','Comedy','Crime','Drama','Epics','Horror','Musicals','Sci-fi','Thrillers','War','Westerns'
+                    ]
+                    .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),

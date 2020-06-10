@@ -53,7 +53,7 @@ class MovieCarousel extends StatelessWidget {
                   width: 6.0,
                 ),
                 scrollDirection: Axis.horizontal,
-                itemCount: 1,
+                itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot document =
                       snapshot.data.documents[index];
