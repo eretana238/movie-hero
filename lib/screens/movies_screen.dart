@@ -22,10 +22,11 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        MovieCarousel('Action & Adventure', 0),
-      ],
+    return ListView.builder(
+      itemCount: 1,
+      itemBuilder: (context, index) {
+        return MovieCarousel(genres[index], index);
+      },
     );
   }
 }

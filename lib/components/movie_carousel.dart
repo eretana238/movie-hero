@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_hero/screens/movie_info_screen.dart';
 // import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/db_service.dart';
 
@@ -40,17 +42,37 @@ class MovieCarousel extends StatelessWidget {
           ),
         ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           height: 130.0,
           child: StreamBuilder(
-            stream: DBService.movieCollections()[_movieCollectionIndex].snapshots(),
+            stream: DBService.collections[_movieCollectionIndex].snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const Text('Loading..');
-              return ListView.builder(
-                itemExtent: 80.0,
-                itemCount: snapshot.data.documents.length,
+              return ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => SizedBox(
+                  width: 6.0,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemCount: 1,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: snapshot.data.documents.length,
+                  final DocumentSnapshot document =
+                      snapshot.data.documents[index];
+                  final dynamic imageURL = document['imageURL'];
+                  return GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MovieInfoScreen(),
+                      ),
+                    ),
+                    child: Container(
+                      child: Image.network(
+                        imageURL,
+                        width: 85.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   );
                 },
               );
@@ -80,7 +102,5 @@ class MovieCarousel extends StatelessWidget {
 //                 ),
 //               );
 //             },
-//             separatorBuilder: (BuildContext context, int index) => SizedBox(
-//               width: 6.0,
-//             ),
+
 //           ),
