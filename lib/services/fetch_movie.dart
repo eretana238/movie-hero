@@ -14,8 +14,8 @@ class FetchMovie{
   static FetchMovie _instance;
 
   static String _title;
-  static String _cx = keys.searchEngineId;
-  static String _key = keys.customSearchKey;
+  static String _cx = keys.cx;
+  static String _key = keys.key;
 
   final String _castURL = 'https://customsearch.googleapis.com/customsearch/v1?cx=$_cx&q=$_title&key=$_key';
   
@@ -53,10 +53,11 @@ class FetchMovie{
     if(response.statusCode == 200){
       var res = response.body;
       var data = json.decode(res);
+      print(data['items'][0]['link'].toString());
       return data['items'][0]['link'].toString();
     }
     else {
-      print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${response.statusCode}.'); 
       return null;
     }
   }

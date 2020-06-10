@@ -12,6 +12,7 @@ class _AddScreenState extends State<AddScreen> {
   final FetchMovie _fetchMovie = FetchMovie.getInstance();
   final titleController = TextEditingController();
   final yearController = TextEditingController();
+  String dropdownValue = 'One';
 
   @override
   void dispose() {
@@ -56,7 +57,7 @@ class _AddScreenState extends State<AddScreen> {
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter title';
                   }
                   return null;
                 },
@@ -94,10 +95,35 @@ class _AddScreenState extends State<AddScreen> {
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter some location';
                   }
                   return null;
                 },
+              ),
+              Container(
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>['One', 'Two', 'Free', 'Four']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
@@ -108,8 +134,9 @@ class _AddScreenState extends State<AddScreen> {
                       * Checks if all fields are filled, then starts making http requests
                       */
                       if (_formKey.currentState.validate()) {
-                        _fetchMovie.title = '${titleController.text} ${yearController.text}';
-                        
+                        _fetchMovie.title =
+                            '${titleController.text} ${yearController.text}';
+                        _fetchMovie.getImage();
                       }
                     },
                     child: Row(
