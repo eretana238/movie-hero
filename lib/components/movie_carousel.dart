@@ -62,6 +62,7 @@ class MovieCarousel extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
+                        // TODO: add optoin to pass documents with data to movie info screen
                         builder: (_) => MovieInfoScreen(),
                       ),
                     ),
@@ -83,24 +84,3 @@ class MovieCarousel extends StatelessWidget {
     );
   }
 }
-
-// ListView.separated(
-//             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-//             scrollDirection: Axis.horizontal,
-//             itemCount: 6,
-//             itemBuilder: (context, index) {
-//               // TODO: create movie here
-//               return GestureDetector(
-//                 onTap: () => Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (_) => MovieInfoScreen(),
-//                   ),
-//                 ),
-//                 child: Container(
-//                   child: Image.asset('assets/images/movie11.jpg'),
-//                 ),
-//               );
-//             },
-
-//           ),
