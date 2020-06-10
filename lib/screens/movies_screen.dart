@@ -7,19 +7,24 @@ class MoviesScreen extends StatefulWidget {
 }
 
 class _MoviesScreenState extends State<MoviesScreen> {
-   @override
+  List<String> genres = [
+    'Action & Adventure',
+    'Comedy',
+    'Crime',
+    'Drama',
+    'Epics',
+    'Horror',
+    'Sci-fi',
+    'Thrillers',
+    'War',
+    'Westerns'
+  ];
+
+  @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        MovieCarousel('Recently Checked out', 5),
-        MovieCarousel('Recently Checked in', 15),
-        // TODO: implement pick of the day here
-        MovieCarousel('Recommended', 7),
-        MovieCarousel('Action & Adventure', 40),
-        MovieCarousel('Comedy', 40),
-        MovieCarousel('Family', 30),
-        MovieCarousel('Drama', 15),
-        MovieCarousel('Thrillers', 15),
+        MovieCarousel('Action & Adventure', 0),
       ],
     );
   }
