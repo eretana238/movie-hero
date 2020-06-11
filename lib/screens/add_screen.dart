@@ -142,9 +142,8 @@ class _AddScreenState extends State<AddScreen> {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _fetchMovie.title = '${titleController.text}';
-                        _fetchMovie.year = '${yearController.text}';
-                        _fetchMovie.makeRequest();
+                        _fetchMovie.makeRequest('${titleController.text}', '${yearController.text}');
+                        _fetchMovie.fetchCast();
                         // print(data[0]['Title'] + ' ' + data[0]['Year']);
                       }
                     },

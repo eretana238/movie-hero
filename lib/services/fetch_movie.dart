@@ -1,3 +1,4 @@
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_hero/models/keys.dart';
 import 'dart:convert' show json;
@@ -8,13 +9,9 @@ import 'dart:convert' show json;
 class FetchMovie{
   static FetchMovie _instance;
 
-  static String _title;
-  static String _year;
-
   String _posterURL;
   String _castURL;
-
-  dynamic _requestData;
+  String _imdbID;
   
   FetchMovie._();
 
@@ -23,18 +20,9 @@ class FetchMovie{
       _instance = new FetchMovie._();
     return _instance;
   }
-  
-  set title(String title) {
-    _title = title;
-    // _parseTitle();
-  }
 
-  set year(String year) {
-    _year = year;
-  }
-
-  Future<dynamic> makeRequest() async {
-    final String requestURL = 'https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&y=$_year&r=json&s=$_title';
+  Future<bool> makeRequest(String title, String year) async {
+    final String requestURL = 'https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&y=$year&r=json&s=$title';
     var response = await http.get(
       requestURL,
       headers: {
@@ -44,30 +32,47 @@ class FetchMovie{
       }
     );
     if(response.statusCode == 200){
-      var res = response.body;
-      var data = json.decode(res);
-      print(data['Search'][0]['Title']);
-      return data['Search'];
+      String res = response.body;
+      dynamic data = json.decode(res);
+
+      _posterURL = data['Search'][0]['Poster'];
+      _imdbID = data['Search'][0]['imdbID'];
+      return true;
     }
     else {
       print('Request failed with status: ${response.statusCode}.'); 
-      return null;
+      return false;
     }
   }
 
-  Future<String> fetchCast(dynamic data) async{
-    
+  Future<String> fetchCast() async{
+    _castURL = 'https://www.imdb.com/title/' + _imdbID;
     var response = await http.get(
-      'https://www.imdb.com/title/' + data['imdbID'],
-      headers: {'Accept': 'application/json'}
+      _castURL,
     );
     if(response.statusCode == 200){
-      print(response.body);
+      var document = parse(response.body);
+      var tableRows = document.querySelectorAll('.cast_list tbody tr');
+      for(int i = 1; i < 9; i++) {
+        print(tableRows[i].children[1].querySelector('a').text);
+      }
       return '';
     }
     else {
       print('Request failed with status: ${response.statusCode}.');
       return null;
     }
+  }
+
+  String get posterURL {
+    return _posterURL;
+  }
+
+  String get castURL {
+    return _castURL;
+  }
+
+  String get imdbID {
+    return _imdbID;
   }
 }
