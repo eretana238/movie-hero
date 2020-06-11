@@ -141,13 +141,11 @@ class _AddScreenState extends State<AddScreen> {
                 child: Center(
                   child: RaisedButton(
                     onPressed: () {
-                      /*
-                      * Checks if all fields are filled, then starts making http requests
-                      */
                       if (_formKey.currentState.validate()) {
-                        _fetchMovie.title =
-                            '${titleController.text} ${yearController.text}';
-                        _fetchMovie.getImage();
+                        _fetchMovie.title = '${titleController.text}';
+                        _fetchMovie.year = '${yearController.text}';
+                        _fetchMovie.makeRequest();
+                        // print(data[0]['Title'] + ' ' + data[0]['Year']);
                       }
                     },
                     child: Row(
