@@ -28,7 +28,7 @@ class _AddScreenState extends State<AddScreen> {
       await _fetchMovie.addCast();
     }
     CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)];
-    DBService.addDocument(collection, _titleController.text, _yearController.text, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
+    DBService.addDocument(collection, _fetchMovie.title, _fetchMovie.year, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
     _titleController.text = null;
     _yearController.text = null;
     _locationController.text = null;
@@ -95,12 +95,6 @@ class _AddScreenState extends State<AddScreen> {
                   ),
                   hintText: 'Year',
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter year';
-                  }
-                  return null;
-                },
                 controller: _yearController,
               ),
               SizedBox(

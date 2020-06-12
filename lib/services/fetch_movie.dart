@@ -11,6 +11,8 @@ class FetchMovie{
   String _posterURL;
   String _castURL = 'https://www.imdb.com/title/';
   String _imdbID;
+  String _title;
+  String _year;
   
   List<String> _cast = new List(8);
   FetchMovie._();
@@ -22,7 +24,11 @@ class FetchMovie{
   }
 
   Future<bool> makeRequest(String title, String year) async {
-    final String requestURL = 'https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&y=$year&r=json&s=$title';
+
+    final String requestURL = year != null ? 
+      'https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&y=$year&r=json&s=$title' 
+      : 'https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&r=json&s=$title';
+
     var response = await http.get(
       requestURL,
       headers: {
@@ -37,6 +43,8 @@ class FetchMovie{
 
       _posterURL = data['Search'][0]['Poster'];
       _imdbID = data['Search'][0]['imdbID'];
+      _title = data['Search'][0]['Title'];
+      _year = data['Search'][0]['Year'];
       return true;
     }
     else {
@@ -47,7 +55,7 @@ class FetchMovie{
 
   Future<String> addCast() async{
     var response = await http.get(
-      _castURL+imdbID,
+      _castURL+_imdbID,
     );
     if(response.statusCode == 200){
       var document = parse(response.body);
@@ -67,15 +75,15 @@ class FetchMovie{
     return _posterURL;
   }
 
-  String get castURL {
-    return _castURL;
-  }
-
   List<String> get cast{
     return _cast;
   }
 
-  String get imdbID {
-    return _imdbID;
+  String get title {
+    return _title;
+  }
+  
+  String get year {
+    return _year;
   }
 }

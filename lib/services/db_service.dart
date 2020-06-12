@@ -59,6 +59,6 @@ class DBService {
       'location': location,
     };
     
-    collection.document().setData(data).then((_) => print('Succefully written')).catchError((onError) => print('There was an error: $onError'));
+    collection.document(title).setData(data).then((_) => print('Succefully written')).catchError((onError) => print('There was an error: $onError'));
   }
 }
