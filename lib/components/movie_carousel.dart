@@ -5,8 +5,8 @@ import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/db_service.dart';
 
 class MovieCarousel extends StatelessWidget {
-  String _title;
-  int _movieCollectionIndex;
+  final String _title;
+  final int _movieCollectionIndex;
 
   MovieCarousel(this._title, this._movieCollectionIndex);
 

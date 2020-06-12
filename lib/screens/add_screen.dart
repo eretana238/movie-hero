@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_hero/services/db_service.dart';
 import 'package:movie_hero/services/fetch_movie.dart';
 
 class AddScreen extends StatefulWidget {
@@ -11,19 +13,33 @@ class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
   final FetchMovie _fetchMovie = FetchMovie.getInstance();
 
-  final titleController = TextEditingController();
-  final yearController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _yearController = TextEditingController();
+  final _locationController = TextEditingController();
 
-  String dropdownValue = 'Action-Adventure';
+  String dropdownValue = 'action-adventure';
+  int dropdownIndex = 0;
 
-  // Future<void> _addDocument 
-  // TODO : start adding new documents in collections
+  List<String> genres = ['action-adventure','comedy','crime','drama','epics','horror','musicals','sci-fi','thrillers','war','westerns'];
+
+  Future<void> _submit() async{
+    if (_formKey.currentState.validate()) {
+      await _fetchMovie.makeRequest('${_titleController.text}', '${_yearController.text}');
+      await _fetchMovie.addCast();
+    }
+    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)];
+    DBService.addDocument(collection, _titleController.text, _yearController.text, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
+    _titleController.text = null;
+    _yearController.text = null;
+    _locationController.text = null;
+    dropdownValue = genres[0];
+  }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    titleController.dispose();
-    yearController.dispose();
+    _titleController.dispose();
+    _yearController.dispose();
     super.dispose();
   }
 
@@ -66,7 +82,7 @@ class _AddScreenState extends State<AddScreen> {
                   }
                   return null;
                 },
-                controller: titleController,
+                controller: _titleController,
               ),
               SizedBox(
                 height: 20.0,
@@ -85,7 +101,7 @@ class _AddScreenState extends State<AddScreen> {
                   }
                   return null;
                 },
-                controller: yearController,
+                controller: _yearController,
               ),
               SizedBox(
                 height: 20.0,
@@ -104,6 +120,7 @@ class _AddScreenState extends State<AddScreen> {
                   }
                   return null;
                 },
+                controller: _locationController,
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
@@ -124,10 +141,7 @@ class _AddScreenState extends State<AddScreen> {
                         dropdownValue = newValue;
                       });
                     },
-                    items: <String>[
-                      'Action-Adventure','Comedy','Crime','Drama','Epics','Horror','Musicals','Sci-fi','Thrillers','War','Westerns'
-                    ]
-                    .map<DropdownMenuItem<String>>((String value) {
+                    items: genres.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -140,13 +154,7 @@ class _AddScreenState extends State<AddScreen> {
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
                 child: Center(
                   child: RaisedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _fetchMovie.makeRequest('${titleController.text}', '${yearController.text}');
-                        _fetchMovie.fetchCast();
-                        // print(data[0]['Title'] + ' ' + data[0]['Year']);
-                      }
-                    },
+                    onPressed: () => _submit(),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

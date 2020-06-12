@@ -2,7 +2,6 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_hero/models/keys.dart';
 import 'dart:convert' show json;
-
 /*
  * Class keys contains the api keys to make http requests work
 */
@@ -10,9 +9,10 @@ class FetchMovie{
   static FetchMovie _instance;
 
   String _posterURL;
-  String _castURL;
+  String _castURL = 'https://www.imdb.com/title/';
   String _imdbID;
   
+  List<String> _cast = new List(8);
   FetchMovie._();
 
   static FetchMovie getInstance() {
@@ -45,16 +45,15 @@ class FetchMovie{
     }
   }
 
-  Future<String> fetchCast() async{
-    _castURL = 'https://www.imdb.com/title/' + _imdbID;
+  Future<String> addCast() async{
     var response = await http.get(
-      _castURL,
+      _castURL+imdbID,
     );
     if(response.statusCode == 200){
       var document = parse(response.body);
       var tableRows = document.querySelectorAll('.cast_list tbody tr');
       for(int i = 1; i < 9; i++) {
-        print(tableRows[i].children[1].querySelector('a').text);
+        _cast[i-1] = tableRows[i].children[1].querySelector('a').text.trim();
       }
       return '';
     }
@@ -70,6 +69,10 @@ class FetchMovie{
 
   String get castURL {
     return _castURL;
+  }
+
+  List<String> get cast{
+    return _cast;
   }
 
   String get imdbID {

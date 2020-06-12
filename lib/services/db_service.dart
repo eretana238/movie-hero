@@ -48,4 +48,16 @@ class DBService {
   CollectionReference get westerns {
     return _westerns;
   }
+
+  static bool addDocument(CollectionReference collection, String title, String year, List<String> cast, String category, String posterURL, String location) {
+    var data = {
+      title: title,
+      year: year,
+      category: category,
+      posterURL: posterURL,
+      location: location,
+    };
+    
+    collection.document().setData(data).then((_) => print('Succefully written')).catchError((onError) => print('There was an error: $onError'));
+  }
 }
