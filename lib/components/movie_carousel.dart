@@ -57,7 +57,7 @@ class MovieCarousel extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot document =
                       snapshot.data.documents[index];
-                  final dynamic imageURL = document['imageURL'];
+                  final dynamic posterURL = document['posterURL'];
                   return GestureDetector(
                     onTap: () => Navigator.push(
                       context,
@@ -68,7 +68,7 @@ class MovieCarousel extends StatelessWidget {
                     ),
                     child: Container(
                       child: Image.network(
-                        imageURL,
+                        posterURL,
                         width: 85.0,
                         height: 100.0,
                         fit: BoxFit.cover,
