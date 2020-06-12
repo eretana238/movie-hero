@@ -23,7 +23,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 1,
+      itemCount: genres.length,
       itemBuilder: (context, index) {
         return MovieCarousel(genres[index], index);
       },
