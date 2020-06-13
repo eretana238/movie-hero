@@ -66,7 +66,7 @@ class MovieCarousel extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              MovieInfoScreen(posterURL: posterURL, cast: cast),
+                              MovieInfoScreen(posterURL: posterURL, cast: cast, location: location),
                         ),
                       );
                     },

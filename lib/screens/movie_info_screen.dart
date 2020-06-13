@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class MovieInfoScreen extends StatefulWidget {
   final String posterURL;
   final dynamic cast;
+  final String location;
 
-  MovieInfoScreen({Key key, this.posterURL, this.cast}) : super(key: key);
+  MovieInfoScreen({Key key, this.posterURL, this.cast, this.location}) : super(key: key);
 
   @override
   _MovieInfoScreenState createState() => _MovieInfoScreenState();
@@ -86,14 +87,44 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                     Icons.arrow_back_ios,
                     color: Colors.white,
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    print(widget.cast[0]);
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ],
           ),
           Column(
-            children: <Widget> [],
-          )
+            children: <Widget>[
+              SizedBox(
+                height: 30.0,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Cast: '),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(widget.cast[0]),
+                      Text(widget.cast[1]),
+                      Text(widget.cast[2]),
+                      Text(widget.cast[3]),
+                      Text(widget.cast[4]),
+                      Text(widget.cast[5]),
+                      Text(widget.cast[6]),
+                      Text(widget.cast[7])
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+            ],
+          ),
         ],
       ),
     );
