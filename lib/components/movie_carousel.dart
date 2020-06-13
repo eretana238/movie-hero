@@ -62,7 +62,6 @@ class MovieCarousel extends StatelessWidget {
                   final dynamic location = document['location'];
                   return GestureDetector(
                     onTap: () {
-                      print(cast);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -91,13 +91,9 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
               ),
             ],
           ),
-          // ListView.builder(
-          //     itemCount: widget.cast.length,
-          //     itemBuilder: (context, index) {
-          //       return ListTile(
-          //         title: Text(widget.cast[0][index].toString()),
-          //       );
-          //     }),
+          Column(
+            children: <Widget> [],
+          )
         ],
       ),
     );
