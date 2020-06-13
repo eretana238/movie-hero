@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class MovieInfoScreen extends StatefulWidget {
   final String posterURL;
+  final dynamic cast;
 
-  MovieInfoScreen({Key key, this.posterURL}) : super(key: key);
+  MovieInfoScreen({Key key, this.posterURL, this.cast}) : super(key: key);
 
   @override
   _MovieInfoScreenState createState() => _MovieInfoScreenState();
@@ -11,7 +12,6 @@ class MovieInfoScreen extends StatefulWidget {
 
 class _MovieInfoScreenState extends State<MovieInfoScreen> {
   bool isCheckedOut = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,21 +34,23 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                 ),
                 child: Container(
                   foregroundDecoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.0,0.3,1.0],
-                      colors: [
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: [
+                        0.0,
+                        0.3,
+                        1.0
+                      ],
+                          colors: [
                         const Color(0xFF101010),
                         const Color(0x00101010),
                         const Color(0xFF101010),
-                      ]
-                    )
-                  ),
+                      ])),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 19.0),
+                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 19.0),
                 child: Center(
                   child: RaisedButton(
                     color: isCheckedOut
@@ -77,19 +79,25 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                 ),
               ),
               Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => Navigator.pop(context),
+                top: 0.0,
+                left: 0.0,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
                   ),
+                  onPressed: () => Navigator.pop(context),
                 ),
+              ),
             ],
           ),
-          Text('Cast'),
+          // ListView.builder(
+          //     itemCount: widget.cast.length,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         title: Text(widget.cast[0][index].toString()),
+          //       );
+          //     }),
         ],
       ),
     );

@@ -61,12 +61,16 @@ class MovieCarousel extends StatelessWidget {
                   final dynamic cast = document['cast'];
                   final dynamic location = document['location'];
                   return GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MovieInfoScreen(posterURL: posterURL),
-                      ),
-                    ),
+                    onTap: () {
+                      print(cast);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              MovieInfoScreen(posterURL: posterURL, cast: cast),
+                        ),
+                      );
+                    },
                     child: Container(
                       child: Image.network(
                         posterURL,
