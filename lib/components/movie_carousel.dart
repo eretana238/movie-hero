@@ -58,12 +58,13 @@ class MovieCarousel extends StatelessWidget {
                   final DocumentSnapshot document =
                       snapshot.data.documents[index];
                   final dynamic posterURL = document['posterURL'];
+                  final dynamic cast = document['cast'];
+                  final dynamic location = document['location'];
                   return GestureDetector(
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        // TODO: add optoin to pass documents with data to movie info screen
-                        builder: (_) => MovieInfoScreen(),
+                        builder: (_) => MovieInfoScreen(posterURL: posterURL),
                       ),
                     ),
                     child: Container(

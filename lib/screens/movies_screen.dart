@@ -14,6 +14,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
     'Drama',
     'Epics',
     'Horror',
+    'Musicals',
     'Sci-fi',
     'Thrillers',
     'War',
