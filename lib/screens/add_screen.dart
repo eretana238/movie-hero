@@ -21,7 +21,9 @@ class _AddScreenState extends State<AddScreen> {
   int dropdownIndex = 0;
 
   List<String> genres = ['action-adventure','comedy','crime','drama','epics','horror','musicals','sci-fi','thrillers','war','westerns'];
-
+  /*
+    fetches information from movie database api, and adds it in the movie hero database
+  */
   Future<void> _submit() async{
     if (_formKey.currentState.validate()) {
       await _fetchMovie.makeRequest('${_titleController.text}', '${_yearController.text}');
@@ -29,10 +31,7 @@ class _AddScreenState extends State<AddScreen> {
     }
     CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)];
     DBService.addDocument(collection, _fetchMovie.title, _fetchMovie.year, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
-    _titleController.text = null;
-    _yearController.text = null;
-    _locationController.text = null;
-    dropdownValue = genres[0];
+    _formKey.currentState.reset();
   }
 
   @override

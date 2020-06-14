@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_hero/screens/movie_info_screen.dart';
-// import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/db_service.dart';
 
 class MovieCarousel extends StatelessWidget {

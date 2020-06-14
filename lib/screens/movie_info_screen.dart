@@ -88,7 +88,6 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    print(widget.cast[0]);
                     Navigator.pop(context);
                   },
                 ),

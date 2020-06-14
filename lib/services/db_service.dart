@@ -15,7 +15,7 @@ class DBService {
 
   static final List<CollectionReference> collections = [_actionAdventure, _comedy, _crime, _drama, _epics, _horror, _musicals, _sciFi, _thrillers, _war, _westerns];
 
-  static bool addDocument(CollectionReference collection, String title, String year, List<String> cast, String category, String posterURL, String location) {
+  static void addDocument(CollectionReference collection, String title, String year, List<String> cast, String category, String posterURL, String location) {
     var data = {
       'title': title,
       'year': year,
@@ -25,6 +25,14 @@ class DBService {
       'location': location,
     };
     
-    collection.document(title).setData(data).then((_) => print('Succefully written')).catchError((onError) => print('There was an error: $onError'));
+    collection.document(title).setData(data)
+      .then((_) => {
+        print('Succefully written')
+      })
+      .catchError((onError) => {
+        print('There was an error: $onError')
+      });
   }
+
+  // static void removeDocument
 }
