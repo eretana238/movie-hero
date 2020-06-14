@@ -7,7 +7,7 @@ class MoviesScreen extends StatefulWidget {
 }
 
 class _MoviesScreenState extends State<MoviesScreen> {
-  List<String> genres = [
+  List<String> categories = [
     'Action & Adventure',
     'Comedy',
     'Crime',
@@ -24,9 +24,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: genres.length,
+      itemCount: categories.length,
       itemBuilder: (context, index) {
-        return MovieCarousel(genres[index], index);
+        return MovieCarousel(categories[index], index);
       },
     );
   }

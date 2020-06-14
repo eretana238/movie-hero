@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DBService {
+  static final CollectionReference _checkedOut = Firestore.instance.collection('checked-out');
   static final CollectionReference _actionAdventure = Firestore.instance.collection('action-adventure');
   static final CollectionReference _comedy = Firestore.instance.collection('comedy');
   static final CollectionReference _crime = Firestore.instance.collection('crime');
@@ -13,7 +14,19 @@ class DBService {
   static final CollectionReference _war = Firestore.instance.collection('war');
   static final CollectionReference _westerns = Firestore.instance.collection('westerns');
 
-  static final List<CollectionReference> collections = [_actionAdventure, _comedy, _crime, _drama, _epics, _horror, _musicals, _sciFi, _thrillers, _war, _westerns];
+  static final List<CollectionReference> collections = [
+    _actionAdventure, 
+    _comedy, 
+    _crime, 
+    _drama, 
+    _epics, 
+    _horror, 
+    _musicals, 
+    _sciFi, 
+    _thrillers,
+    _war, 
+    _westerns
+  ];
 
   static void addDocument(CollectionReference collection, String title, String year, List<String> cast, String category, String posterURL, String location) {
     var data = {
@@ -25,7 +38,9 @@ class DBService {
       'location': location,
     };
     
-    collection.document(title).setData(data)
+    collection
+      .document(title)
+      .setData(data)
       .then((_) => {
         print('Succefully written')
       })
@@ -35,7 +50,9 @@ class DBService {
   }
 
   static bool removeDocument(CollectionReference collection, String title) {
-    collection.document(title).delete()
+    collection
+      .document(title)
+      .delete()
       .then((_) => {
         print('Succefully written')
       })
@@ -45,9 +62,14 @@ class DBService {
   }
 
   static bool checkoutDocument(String title, String category) {
-    // get document info
-    DocumentReference doc = getCollection(category).document(title);
-    doc.get().then((document) => print(document['title']));
+    CollectionReference collection = getCollection(category);
+    DocumentReference doc = collection.document(title);
+    
+    doc.get().then((document) {
+      addDocument(collection, document['title'], document['year'], document['cast'], document['category'], document['posterURL'], document['location']);
+    });
+  
+    collection.document(title).delete().then((value) => print('Successfully removed document')).catchError((onError) => print('There was an error: $onError'));
     
   }
 
