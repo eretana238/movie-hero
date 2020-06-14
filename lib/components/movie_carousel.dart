@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_hero/models/movie.dart';
 import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/db_service.dart';
 
 class MovieCarousel extends StatelessWidget {
   final String _title;
   final int _movieCollectionIndex;
+  String posterURL;
 
   MovieCarousel(this._title, this._movieCollectionIndex);
 
@@ -56,16 +58,19 @@ class MovieCarousel extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot document =
                       snapshot.data.documents[index];
-                  final dynamic posterURL = document['posterURL'];
-                  final dynamic cast = document['cast'];
-                  final dynamic location = document['location'];
+                      posterURL = document['posterURL'];
+                  Movie movie = new Movie(
+                      document['category'],
+                      document['title'],
+                      document['posterURL'],
+                      document['cast'],
+                      document['location']);
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              MovieInfoScreen(posterURL: posterURL, cast: cast, location: location),
+                          builder: (_) => MovieInfoScreen(movie: movie),
                         ),
                       );
                     },

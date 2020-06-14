@@ -34,5 +34,47 @@ class DBService {
       });
   }
 
-  // static void removeDocument
+  static bool removeDocument(CollectionReference collection, String title) {
+    collection.document(title).delete()
+      .then((_) => {
+        print('Succefully written')
+      })
+      .catchError((onError) => {
+        print('There was an error: $onError')
+      });
+  }
+
+  static bool checkoutDocument(String title, String category) {
+    // get document info
+    DocumentReference doc = getCollection(category).document(title);
+    doc.get().then((document) => print(document['title']));
+    
+  }
+
+  static CollectionReference getCollection(String collection) {
+    switch (collection) {
+      case 'action-adventure':
+        return _actionAdventure; 
+      case 'comedy':
+        return _comedy;
+      case 'drama':
+        return _drama; 
+      case 'epics':
+        return _epics;
+      case 'horror':
+        return _horror; 
+      case 'musicals':
+        return _musicals;
+      case 'sci-fi':
+        return _sciFi; 
+      case 'thrillers':
+        return _thrillers;
+      case 'war':
+        return _war; 
+      case 'westerns':
+        return _westerns;
+      default: 
+        return null;
+    }
+  }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:movie_hero/models/movie.dart';
+import 'package:movie_hero/services/db_service.dart';
 
 class MovieInfoScreen extends StatefulWidget {
-  final String posterURL;
-  final dynamic cast;
-  final String location;
+  final Movie movie;
 
-  MovieInfoScreen({Key key, this.posterURL, this.cast, this.location}) : super(key: key);
+  MovieInfoScreen({Key key, this.movie}) : super(key: key);
 
   @override
   _MovieInfoScreenState createState() => _MovieInfoScreenState();
@@ -28,7 +28,7 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                      widget.posterURL,
+                      widget.movie.posterURL,
                     ),
                     fit: BoxFit.fill,
                   ),
@@ -50,6 +50,9 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                       ])),
                 ),
               ),
+              /*
+              * Raised button
+              */
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 19.0),
                 child: Center(
@@ -58,6 +61,7 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                         ? Theme.of(context).primaryColor
                         : Colors.red,
                     onPressed: () {
+                      DBService.checkoutDocument(widget.movie.title, widget.movie.category);
                       setState(() {
                         isCheckedOut = !isCheckedOut;
                       });
@@ -107,14 +111,14 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(widget.cast[0]),
-                      Text(widget.cast[1]),
-                      Text(widget.cast[2]),
-                      Text(widget.cast[3]),
-                      Text(widget.cast[4]),
-                      Text(widget.cast[5]),
-                      Text(widget.cast[6]),
-                      Text(widget.cast[7])
+                      Text(widget.movie.cast[0]),
+                      Text(widget.movie.cast[1]),
+                      Text(widget.movie.cast[2]),
+                      Text(widget.movie.cast[3]),
+                      Text(widget.movie.cast[4]),
+                      Text(widget.movie.cast[5]),
+                      Text(widget.movie.cast[6]),
+                      Text(widget.movie.cast[7])
                     ],
                   ),
                 ],
