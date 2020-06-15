@@ -23,6 +23,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
   ];
 
   @override
+  void initState() {
+    // TODO: 
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: categories.length,
