@@ -8,6 +8,7 @@ class MoviesScreen extends StatefulWidget {
 
 class _MoviesScreenState extends State<MoviesScreen> {
   List<String> categories = [
+    'Checked out',
     'Action & Adventure',
     'Comedy',
     'Crime',

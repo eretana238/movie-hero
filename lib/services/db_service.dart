@@ -15,6 +15,7 @@ class DBService {
   static final CollectionReference _westerns = Firestore.instance.collection('westerns');
 
   static final List<CollectionReference> collections = [
+    _checkedOut,
     _actionAdventure, 
     _comedy, 
     _crime, 
@@ -28,7 +29,7 @@ class DBService {
     _westerns
   ];
 
-  static void addDocument(CollectionReference collection, String title, String year, List<String> cast, String category, String posterURL, String location) {
+  static bool addDocument(CollectionReference collection, String title, String year, dynamic cast, String category, String posterURL, String location) {
     var data = {
       'title': title,
       'year': year,
@@ -41,40 +42,63 @@ class DBService {
     collection
       .document(title)
       .setData(data)
-      .then((_) => {
-        print('Succefully written')
+      .then((_) {
+        print('Succefully written');
+        return true;
       })
-      .catchError((onError) => {
-        print('There was an error: $onError')
+      .catchError((onError) {
+        print('There was an error: $onError');
       });
+      return false;
   }
 
-  static bool removeDocument(CollectionReference collection, String title) {
+  static removeDocument(CollectionReference collection, String title) {
     collection
       .document(title)
       .delete()
-      .then((_) => {
-        print('Succefully written')
+      .then((_)  {
+        print('Succefully written');
+        return true;
       })
-      .catchError((onError) => {
-        print('There was an error: $onError')
+      .catchError((onError) {
+        print('There was an error: $onError');
       });
+      return false;
   }
 
-  static bool checkoutDocument(String title, String category) {
+  static Future<bool> checkoutDocument(String title, String category) async{
     CollectionReference collection = getCollection(category);
     DocumentReference doc = collection.document(title);
+
+    bool addedDocument;
+    bool removedDocument;
     
-    doc.get().then((document) {
-      addDocument(collection, document['title'], document['year'], document['cast'], document['category'], document['posterURL'], document['location']);
+    await doc.get()
+    .then((document) {
+      addedDocument = addDocument(_checkedOut, document['title'], document['year'], document['cast'], document['category'], document['posterURL'], document['location']);
     });
   
-    collection.document(title).delete().then((value) => print('Successfully removed document')).catchError((onError) => print('There was an error: $onError'));
-    
+    removedDocument = removeDocument(collection, title);
+    return addedDocument && removedDocument;
+  }
+
+  static Future<bool> checkinDocument(String title) async{
+    DocumentReference doc = _checkedOut.document(title);
+    bool addedDocument;
+    bool removedDocument;
+    await doc.get()
+    .then((document) {
+      addedDocument = addDocument(getCollection(document['category']), document['title'], document['year'], document['cast'], document['category'], document['posterURL'], document['location']);
+    });
+  
+    removedDocument = removeDocument(_checkedOut, title);
+    return addedDocument && removedDocument;
   }
 
   static CollectionReference getCollection(String collection) {
     switch (collection) {
+      case 'checked-out':
+        return _checkedOut;
       case 'action-adventure':
         return _actionAdventure; 
       case 'comedy':

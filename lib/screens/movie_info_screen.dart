@@ -4,15 +4,24 @@ import 'package:movie_hero/services/db_service.dart';
 
 class MovieInfoScreen extends StatefulWidget {
   final Movie movie;
+  final String collection;
 
-  MovieInfoScreen({Key key, this.movie}) : super(key: key);
+  MovieInfoScreen({Key key, this.movie, this.collection}) : super(key: key);
 
   @override
   _MovieInfoScreenState createState() => _MovieInfoScreenState();
 }
 
 class _MovieInfoScreenState extends State<MovieInfoScreen> {
-  bool isCheckedOut = false;
+  String collection;
+  bool isCheckedOut;
+
+  @override
+  void initState() {
+    collection = widget.collection;
+    collection == 'Checked out' ? isCheckedOut = true : isCheckedOut = false;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +70,11 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
                         ? Theme.of(context).primaryColor
                         : Colors.red,
                     onPressed: () {
-                      DBService.checkoutDocument(widget.movie.title, widget.movie.category);
+                      if(isCheckedOut) 
+                        DBService.checkinDocument(widget.movie.title);
+                      else 
+                        DBService.checkoutDocument(widget.movie.title, widget.movie.category);
+                      
                       setState(() {
                         isCheckedOut = !isCheckedOut;
                       });

@@ -70,7 +70,7 @@ class MovieCarousel extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MovieInfoScreen(movie: movie),
+                          builder: (_) => MovieInfoScreen(movie: movie, collection: _title),
                         ),
                       );
                     },
