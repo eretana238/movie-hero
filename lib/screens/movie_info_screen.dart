@@ -22,18 +22,17 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('AlertDialog Title'),
+          title: Text('Movie Location'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text(widget.movie.location),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Approve'),
+              child: Text('Accept'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
