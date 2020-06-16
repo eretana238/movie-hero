@@ -9,14 +9,26 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
-        Container(
-          child: Text('hello'),
-        ),
-        // ListView(
-        //   children: <Widget>[],
-        // ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: TextField(
+            onChanged: (value) {
+              // initiateSearch(value);
+            },
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.search,
+              ),
+              contentPadding: EdgeInsets.only(left: 25.0),
+              hintText: 'Search by name',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }
