@@ -23,14 +23,6 @@ class _MoviesScreenState extends State<MoviesScreen> {
     'Westerns'
   ];
 
-
-
-  @override
-  void initState() {
-    // TODO: 
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
