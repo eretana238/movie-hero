@@ -21,8 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
         tempSearchStore = [];
       });
     }
-    var capitalizedValue =
-        value.substring(0, 1).toString().toUpperCase() + value.substring(1);
+    var capitalizedValue = value.toString().toUpperCase();
 
     if (queryResultSet.length == 0 && value.length == 1) {
       SearchService().searchByname(value).then((QuerySnapshot docs) {
@@ -36,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
     } else {
       tempSearchStore = [];
       queryResultSet.forEach((element) {
-        if (element['title'].toString().startsWith(capitalizedValue)) {
+        if (element['title'].toString().toUpperCase().contains(capitalizedValue)) {
           setState(() {
             tempSearchStore.add(element);
           });
