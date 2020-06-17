@@ -28,10 +28,8 @@ class _SearchScreenState extends State<SearchScreen> {
       SearchService().searchByname(value).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.documents.length; i++) {
           queryResultSet.add(docs.documents[i].data);
-          queryResultSet.forEach((element) {
-            setState(() {
-              tempSearchStore.add(element);
-            });
+          setState(() {
+            tempSearchStore.add(docs.documents[i].data);
           });
         }
       });
