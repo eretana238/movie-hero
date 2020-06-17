@@ -22,7 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
       });
     }
     var capitalizedValue = value.toString().toUpperCase();
-
+    // start search
     if (queryResultSet.length == 0 && value.length == 1) {
       SearchService().searchByname(value).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.documents.length; i++) {
@@ -33,9 +33,12 @@ class _SearchScreenState extends State<SearchScreen> {
         }
       });
     } else {
-      tempSearchStore = [];
+      setState(() {
+        tempSearchStore = [];
+      });
       queryResultSet.forEach((element) {
-        if (element['title'].toString().toUpperCase().contains(capitalizedValue)) {
+        if (element['title'].toString().toUpperCase().startsWith(capitalizedValue)) {
+          print(element['title']);
           setState(() {
             tempSearchStore.add(element);
           });
