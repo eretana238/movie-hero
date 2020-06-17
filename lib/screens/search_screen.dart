@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_hero/components/movie_carousel.dart';
+import 'package:movie_hero/models/movie.dart';
+import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/search_service.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class _SearchScreenState extends State<SearchScreen> {
   var tempSearchStore = [];
 
   initiateSearch(value) {
+    // resets search
     if (value.length == 0) {
       setState(() {
         queryResultSet = [];
@@ -26,6 +28,11 @@ class _SearchScreenState extends State<SearchScreen> {
       SearchService().searchByname(value).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.documents.length; i++) {
           queryResultSet.add(docs.documents[i].data);
+          queryResultSet.forEach((element) {
+            setState(() {
+              tempSearchStore.add(element);
+            });
+          });
         }
       });
     } else {
@@ -42,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(10.0),
@@ -63,40 +70,51 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
         SizedBox(height: 10.0),
-        GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-          primary: false,
-          shrinkWrap: true,
-          children: tempSearchStore.map((element) {
-            return buildResultCard(element);
-          }).toList(),
+        Expanded(
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: tempSearchStore.map((element) {
+              return buildResultCard(context, element);
+            }).toList(),
+          ),
         ),
       ],
     );
   }
 }
 
-Widget buildResultCard(data) {
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Image.network(
-            data['posterURL'],
-            height: 50.0,
-          ),
-          Text(
-            data['title'],
-          ),
-          Text(
-            data['year'],
-          ),
-        ],
+Widget buildResultCard(context, document) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+    child: Card(
+      color: Colors.black,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(50),
+        onTap: () {
+          Movie movie = new Movie(document['category'], document['title'],
+              document['posterURL'], document['cast'], document['location']);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MovieInfoScreen(movie: movie),
+            ),
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Image.network(
+              document['posterURL'],
+              height: 50.0,
+            ),
+            Text(
+              document['title'],
+            ),
+            Text(
+              document['year'],
+            ),
+          ],
+        ),
       ),
     ),
   );

@@ -12,6 +12,7 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
   final FetchMovie _fetchMovie = FetchMovie.getInstance();
+  bool loading = false;
 
   final _titleController = TextEditingController();
   final _yearController = TextEditingController();
@@ -25,13 +26,17 @@ class _AddScreenState extends State<AddScreen> {
     fetches information from movie database api, and adds it in the movie hero database
   */
   Future<void> _submit() async{
+    loading = true;
     if (_formKey.currentState.validate()) {
       await _fetchMovie.makeRequest('${_titleController.text}', '${_yearController.text}');
       await _fetchMovie.addCast();
     }
-    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)];
+    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)+1];
     DBService.addDocument(collection, _fetchMovie.title, _fetchMovie.year, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
-    _formKey.currentState.reset();
+    setState(() {
+      _formKey.currentState.reset();
+      loading = false;
+    });
   }
 
   @override
@@ -54,7 +59,10 @@ class _AddScreenState extends State<AddScreen> {
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if(!loading)
+              Navigator.pop(context);
+          },
         ),
       ),
       body: Form(
