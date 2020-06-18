@@ -5,5 +5,9 @@ class SearchService {
       .where('key', isEqualTo: searchField.substring(0,1).toUpperCase())
       .getDocuments();
   }
-  // searchByCast(String searchField) 
+  // searchByCast(String searchField, CollectionReference collection) {
+  //   return collection
+  //     .where('cast', isEqualTo: searchField.substring(0,1).toUpperCase())
+  //     .getDocuments();
+  // } 
 }

@@ -33,20 +33,23 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             );
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.network(
-                document['posterURL'],
-                height: 50.0,
-              ),
-              Text(
-                document['title'],
-              ),
-              Text(
-                document['year'],
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Image.network(
+                  document['posterURL'],
+                  height: 50.0,
+                ),
+                Text(
+                  document['title'],
+                ),
+                Text(
+                  document['year'],
+                ),
+              ],
+            ),
           ),
         ),
       ),
