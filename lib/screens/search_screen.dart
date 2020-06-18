@@ -13,7 +13,60 @@ class _SearchScreenState extends State<SearchScreen> {
   var queryResultSet = [];
   var tempSearchStore = [];
 
-  initiateSearch(value) {
+  bool searchByName = true;
+
+  Widget resultCard(context, document) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      child: Card(
+        color: Colors.black,
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(50),
+          onTap: () {
+            Movie movie = new Movie(document['category'], document['title'],
+                document['posterURL'], document['cast'], document['location']);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MovieInfoScreen(movie: movie),
+              ),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Image.network(
+                document['posterURL'],
+                height: 50.0,
+              ),
+              Text(
+                document['title'],
+              ),
+              Text(
+                document['year'],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget selectionButton(content, color) {
+    return Container(
+      height: 30.0,
+      width: 80.0,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Center(
+        child: Text(content),
+      ),
+    );
+  }
+
+  initiateSearchByName(value) {
     // resets search
     if (value.length == 0) {
       setState(() {
@@ -37,7 +90,10 @@ class _SearchScreenState extends State<SearchScreen> {
         tempSearchStore = [];
       });
       queryResultSet.forEach((element) {
-        if (element['title'].toString().toUpperCase().startsWith(capitalizedValue)) {
+        if (element['title']
+            .toString()
+            .toUpperCase()
+            .startsWith(capitalizedValue)) {
           print(element['title']);
           setState(() {
             tempSearchStore.add(element);
@@ -55,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.all(10.0),
           child: TextField(
             onChanged: (value) {
-              initiateSearch(value);
+              initiateSearchByName(value);
             },
             decoration: InputDecoration(
               prefixIcon: Icon(
@@ -69,53 +125,40 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                if(!searchByName)
+                  setState(() {
+                    searchByName = !searchByName;
+                  });
+              },
+              child: selectionButton('name', searchByName ? Theme.of(context).primaryColor: Color(0xff202020)),
+            ),
+            SizedBox(width: 20.0,),
+            GestureDetector(
+              onTap: () {
+                if(searchByName)
+                  setState(() {
+                    searchByName = !searchByName;
+                  });
+              },
+              child: selectionButton('cast', !searchByName ? Theme.of(context).primaryColor: Color(0xff202020)),
+            )
+          ],
+        ),
         SizedBox(height: 10.0),
         Expanded(
           child: ListView(
             scrollDirection: Axis.vertical,
             children: tempSearchStore.map((element) {
-              return buildResultCard(context, element);
+              return resultCard(context, element);
             }).toList(),
           ),
         ),
       ],
     );
   }
-}
-
-Widget buildResultCard(context, document) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-    child: Card(
-      color: Colors.black,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(50),
-        onTap: () {
-          Movie movie = new Movie(document['category'], document['title'],
-              document['posterURL'], document['cast'], document['location']);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MovieInfoScreen(movie: movie),
-            ),
-          );
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Image.network(
-              document['posterURL'],
-              height: 50.0,
-            ),
-            Text(
-              document['title'],
-            ),
-            Text(
-              document['year'],
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
