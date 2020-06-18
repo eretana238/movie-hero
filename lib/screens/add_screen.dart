@@ -33,8 +33,8 @@ class _AddScreenState extends State<AddScreen> {
     }
     CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)+1];
     DBService.addDocument(collection, _fetchMovie.title, _fetchMovie.year, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
+    _formKey.currentState.reset();
     setState(() {
-      _formKey.currentState.reset();
       loading = false;
     });
   }

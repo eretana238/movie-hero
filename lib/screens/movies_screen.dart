@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_hero/components/movie_carousel.dart';
-import 'package:movie_hero/services/db_service.dart';
 
 class MoviesScreen extends StatefulWidget {
   @override

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_hero/models/movie.dart';
 import 'package:movie_hero/screens/movie_info_screen.dart';
+import 'package:movie_hero/services/db_service.dart';
 import 'package:movie_hero/services/search_service.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -77,14 +78,16 @@ class _SearchScreenState extends State<SearchScreen> {
     var capitalizedValue = value.toString().toUpperCase();
     // start search
     if (queryResultSet.length == 0 && value.length == 1) {
-      SearchService().searchByname(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; i++) {
-          queryResultSet.add(docs.documents[i].data);
-          setState(() {
-            tempSearchStore.add(docs.documents[i].data);
-          });
-        }
-      });
+      for (int i = 1; i < DBService.collections.length; i++) {
+        SearchService().searchByname(value, DBService.collections[i]).then((QuerySnapshot docs) {
+          for (int i = 0; i < docs.documents.length; i++) {
+            queryResultSet.add(docs.documents[i].data);
+            setState(() {
+              tempSearchStore.add(docs.documents[i].data);
+            });
+          }
+        });
+      }
     } else {
       setState(() {
         tempSearchStore = [];
@@ -94,7 +97,6 @@ class _SearchScreenState extends State<SearchScreen> {
             .toString()
             .toUpperCase()
             .startsWith(capitalizedValue)) {
-          print(element['title']);
           setState(() {
             tempSearchStore.add(element);
           });
@@ -111,7 +113,9 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.all(10.0),
           child: TextField(
             onChanged: (value) {
-              initiateSearchByName(value);
+              if (searchByName) initiateSearchByName(value);
+              // else
+              //   initiateSearchByCast(value);
             },
             decoration: InputDecoration(
               prefixIcon: Icon(
@@ -130,22 +134,32 @@ class _SearchScreenState extends State<SearchScreen> {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                if(!searchByName)
+                if (!searchByName)
                   setState(() {
                     searchByName = !searchByName;
                   });
               },
-              child: selectionButton('name', searchByName ? Theme.of(context).primaryColor: Color(0xff202020)),
+              child: selectionButton(
+                  'name',
+                  searchByName
+                      ? Theme.of(context).primaryColor
+                      : Color(0xff202020)),
             ),
-            SizedBox(width: 20.0,),
+            SizedBox(
+              width: 20.0,
+            ),
             GestureDetector(
               onTap: () {
-                if(searchByName)
+                if (searchByName)
                   setState(() {
                     searchByName = !searchByName;
                   });
               },
-              child: selectionButton('cast', !searchByName ? Theme.of(context).primaryColor: Color(0xff202020)),
+              child: selectionButton(
+                  'cast',
+                  !searchByName
+                      ? Theme.of(context).primaryColor
+                      : Color(0xff202020)),
             )
           ],
         ),

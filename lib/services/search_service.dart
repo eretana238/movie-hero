@@ -1,9 +1,9 @@
-import 'package:movie_hero/services/db_service.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class SearchService {
-  searchByname(String searchField) {
-    return DBService.collections[1]
+  searchByname(String searchField, CollectionReference collection) {
+    return collection
       .where('key', isEqualTo: searchField.substring(0,1).toUpperCase())
       .getDocuments();
   }
+  // searchByCast(String searchField) 
 }
