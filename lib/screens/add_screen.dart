@@ -21,18 +21,39 @@ class _AddScreenState extends State<AddScreen> {
   String dropdownValue = 'action-adventure';
   int dropdownIndex = 0;
 
-  List<String> genres = ['action-adventure','comedy','crime','drama','epics','horror','musicals','sci-fi','thrillers','war','westerns'];
+  List<String> genres = [
+    'action-adventure',
+    'comedy',
+    'crime',
+    'drama',
+    'epics',
+    'horror',
+    'musicals',
+    'sci-fi',
+    'thrillers',
+    'war',
+    'westerns'
+  ];
   /*
     fetches information from movie database api, and adds it in the movie hero database
   */
-  Future<void> _submit() async{
-    loading = true;
+  Future<void> _submit() async {
     if (_formKey.currentState.validate()) {
-      await _fetchMovie.makeRequest('${_titleController.text}', '${_yearController.text}');
+      loading = true;
+      await _fetchMovie.makeRequest(
+          '${_titleController.text}', '${_yearController.text}');
       await _fetchMovie.addCast();
     }
-    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue)+1];
-    DBService.addDocument(collection, _fetchMovie.title, _fetchMovie.year, _fetchMovie.cast, dropdownValue, _fetchMovie.posterURL, _locationController.text);
+    CollectionReference collection =
+        DBService.collections[genres.indexOf(dropdownValue) + 1];
+    DBService.addDocument(
+        collection,
+        _fetchMovie.title,
+        _fetchMovie.year,
+        _fetchMovie.cast,
+        dropdownValue,
+        _fetchMovie.posterURL,
+        _locationController.text);
     setState(() {
       _formKey.currentState.reset();
       loading = false;
@@ -44,12 +65,14 @@ class _AddScreenState extends State<AddScreen> {
     // Clean up the controller when the widget is disposed.
     _titleController.dispose();
     _yearController.dispose();
+    // _locationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff101010),
       appBar: AppBar(
         backgroundColor: Color(0xff101010),
@@ -60,8 +83,7 @@ class _AddScreenState extends State<AddScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            if(!loading)
-              Navigator.pop(context);
+            if (!loading) Navigator.pop(context);
           },
         ),
       ),
@@ -69,106 +91,121 @@ class _AddScreenState extends State<AddScreen> {
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusColor: Theme.of(context).primaryColor,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  hintText: 'Title',
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20.0,
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter title';
-                  }
-                  return null;
-                },
-                controller: _titleController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusColor: Theme.of(context).primaryColor,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  hintText: 'Year',
-                ),
-                controller: _yearController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusColor: Theme.of(context).primaryColor,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  hintText: 'Location',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some location';
-                  }
-                  return null;
-                },
-                controller: _locationController,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-                child: Center(
-                  child: DropdownButton<String>(
-                    
-                    value: dropdownValue,
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.white),
-                    underline: Container(
-                      height: 2,
-                      // color: Theme.of(context).primaryColor,
+                TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.title,
                     ),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                    items: genres.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Add title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter title';
+                    }
+                    return null;
+                  },
+                  controller: _titleController,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
-                child: Center(
-                  child: RaisedButton(
-                    onPressed: () => _submit(),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('ADD'),
-                        Icon(
-                          Icons.add,
-                        ),
-                      ],
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.access_time,
+                    ),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Add year (optional)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  controller: _yearController,
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.location_on,
+                    ),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Add location',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some location';
+                    }
+                    return null;
+                  },
+                  controller: _locationController,
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                  child: Center(
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: Colors.white),
+                      underline: Container(
+                        height: 2,
+                        // color: Theme.of(context).primaryColor,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items:
+                          genres.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
-              )
-            ],
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        _submit();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('ADD'),
+                          Icon(
+                            Icons.add,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

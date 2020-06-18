@@ -113,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: TextField(
             onChanged: (value) {
               if (searchByName) initiateSearchByName(value);
