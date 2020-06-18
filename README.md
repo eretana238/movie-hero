@@ -15,9 +15,7 @@ An app that provides a way to manage all DVD/VHS/BluRay movies. Sole purpose is 
 
 Prototype.
 
-<img src="ss/Movies.png" height="400px" />
-<img src="ss/Movie-info.png" height="400px" />
-<img src="ss/Movie-info-2.png" height="400px" />
-<img src="ss/Search.png" height="400px" />
-<img src="ss/Add.png" height="400px" />
+<img src="ss/Movies.png" height="400px" /> 
+<img src="ss/Movie-info.png" height="400px" /><img src="ss/Movie-info-2.png" height="400px" />
+<img src="ss/Search.png" height="400px" /><img src="ss/Add.png" height="400px" />
 
