@@ -1,3 +1,7 @@
+// Copyright 2020, the Movie Hero authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// MIT license that can be found in the LICENSE file.
+
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_hero/models/keys.dart';
