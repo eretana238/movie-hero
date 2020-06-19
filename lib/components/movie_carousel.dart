@@ -20,7 +20,6 @@ class MovieCarousel extends StatefulWidget {
 
 class _MovieCarouselState extends State<MovieCarousel> {
   String posterURL;
-
   Color secondary = Color(0xFFFF2E2E);
 
   @override
