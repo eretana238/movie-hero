@@ -65,7 +65,7 @@ class _AddScreenState extends State<AddScreen> {
     // Clean up the controller when the widget is disposed.
     _titleController.dispose();
     _yearController.dispose();
-    // _locationController.dispose();
+    _locationController.dispose();
     super.dispose();
   }
 

@@ -7,7 +7,7 @@ class SearchService {
   }
   // searchByCast(String searchField, CollectionReference collection) {
   //   return collection
-  //     .where('cast', isEqualTo: searchField.substring(0,1).toUpperCase())
+  //     .where('cast')
   //     .getDocuments();
   // } 
 }
