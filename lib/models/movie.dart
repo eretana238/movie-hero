@@ -3,13 +3,46 @@
 // MIT license that can be found in the LICENSE file.
 
 class Movie {
-  final String _category;
-  final String _title;
-  final String _posterURL;
-  final dynamic _cast;
-  final String _location;
+  String _imdbID;
+  String _title;
+  String _year;
+  String _posterURL;
+  String _category;
+  String _location;
+  dynamic _cast;
 
   Movie(this._category, this._title, this._posterURL, this._cast, this._location);
+
+  // Stores movie from encoded json data 
+  Movie.fromJSON(data) {
+    this._title = data['Search'][0]['Title'];
+    this._year = data['Search'][0]['Year'];
+    this._imdbID = data['Search'][0]['imdbID'];
+    this._posterURL = data['Search'][0]['Poster'];
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'title': _title,
+      'year': _year,
+      'cast': _cast,
+      'category': _category,
+      'posterURL': _posterURL,
+      'location': _location,
+      'key': _title.substring(0,1)
+    };
+    return json;
+  }
+
+  set setCategory(String category) {
+    _category = category;
+  }
+  set setLocation(String location) {
+    _location = location;
+  }
+  set setCast(dynamic cast) {
+    _cast = cast;
+  }
 
   String get category {
     return _category;
@@ -25,5 +58,11 @@ class Movie {
   }
   String get location {
     return _location;
+  }
+  String get imdbID {
+    return _imdbID;
+  }
+  String get year {
+    return _year;
   }
 }

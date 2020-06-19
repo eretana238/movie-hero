@@ -8,12 +8,18 @@ import 'package:movie_hero/models/movie.dart';
 import 'package:movie_hero/screens/movie_info_screen.dart';
 import 'package:movie_hero/services/db_service.dart';
 
-class MovieCarousel extends StatelessWidget {
+class MovieCarousel extends StatefulWidget {
   final String _title;
   final int _movieCollectionIndex;
-  String posterURL;
 
   MovieCarousel(this._title, this._movieCollectionIndex);
+
+  @override
+  _MovieCarouselState createState() => _MovieCarouselState();
+}
+
+class _MovieCarouselState extends State<MovieCarousel> {
+  String posterURL;
 
   Color secondary = Color(0xFFFF2E2E);
 
@@ -27,7 +33,7 @@ class MovieCarousel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                _title,
+                widget._title,
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
@@ -50,7 +56,7 @@ class MovieCarousel extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           height: 130.0,
           child: StreamBuilder(
-            stream: DBService.collections[_movieCollectionIndex].snapshots(),
+            stream: DBService.collections[widget._movieCollectionIndex].snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const Text('Loading..');
               return ListView.separated(
@@ -74,7 +80,7 @@ class MovieCarousel extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MovieInfoScreen(movie: movie, collection: _title),
+                          builder: (_) => MovieInfoScreen(movie: movie, collection: widget._title),
                         ),
                       );
                     },

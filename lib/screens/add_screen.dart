@@ -4,8 +4,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_hero/models/movie.dart';
 import 'package:movie_hero/services/db_service.dart';
-import 'package:movie_hero/services/fetch_movie.dart';
+import 'package:movie_hero/services/http_service.dart';
 
 class AddScreen extends StatefulWidget {
   AddScreen({Key key}) : super(key: key);
@@ -15,8 +16,8 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
-  final FetchMovie _fetchMovie = FetchMovie.getInstance();
-  bool loading = false;
+  final HttpService _httpService = HttpService.getInstance();
+  bool isSubmitting = false;
 
   final _titleController = TextEditingController();
   final _yearController = TextEditingController();
@@ -38,29 +39,20 @@ class _AddScreenState extends State<AddScreen> {
     'war',
     'westerns'
   ];
-  /*
-    fetches information from movie database api, and adds it in the movie hero database
-  */
+  // fetches information from movie database api, and adds it in the movie hero database
   Future<void> _submit() async {
-    if (_formKey.currentState.validate()) {
-      loading = true;
-      await _fetchMovie.makeRequest(
-          '${_titleController.text}', '${_yearController.text}');
-      await _fetchMovie.addCast();
-    }
-    CollectionReference collection =
-        DBService.collections[genres.indexOf(dropdownValue) + 1];
-    DBService.addDocument(
-        collection,
-        _fetchMovie.title,
-        _fetchMovie.year,
-        _fetchMovie.cast,
-        dropdownValue,
-        _fetchMovie.posterURL,
-        _locationController.text);
+    isSubmitting = true;
+    dynamic movieData = await _httpService.requestRapidAPI('${_titleController.text}', '${_yearController.text}');
+    List<String> castData = await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
+    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue) + 1];
+    Movie movie = new Movie.fromJSON(movieData);
+    movie.setCast = castData;
+    movie.setCategory = dropdownValue;
+    movie.setLocation = _locationController.text;
+    DBService.addDocument(collection,movie.toJson());
     setState(() {
       _formKey.currentState.reset();
-      loading = false;
+      isSubmitting = false;
     });
   }
 
@@ -87,7 +79,7 @@ class _AddScreenState extends State<AddScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            if (!loading) Navigator.pop(context);
+            if (!isSubmitting) Navigator.pop(context);
           },
         ),
       ),
@@ -194,7 +186,7 @@ class _AddScreenState extends State<AddScreen> {
                   child: Center(
                     child: RaisedButton(
                       onPressed: () {
-                        _submit();
+                        if (_formKey.currentState.validate()) _submit();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

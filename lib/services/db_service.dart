@@ -44,61 +44,35 @@ class DBService {
     _westerns
   ];
 
-  static bool addDocument(
-      CollectionReference collection,
-      String title,
-      String year,
-      dynamic cast,
-      String category,
-      String posterURL,
-      String location) {
-    var data = {
-      'title': title,
-      'year': year,
-      'cast': cast,
-      'category': category,
-      'posterURL': posterURL,
-      'location': location,
-      'key': title.substring(0,1)
-    };
-
-    collection.document(title).setData(data).then((_) {
+  static bool addDocument(CollectionReference collection, Map<String, dynamic> data) {
+    collection.document(data['title']).setData(data).then((_) {
       print('Succefully written');
-      return true;
     }).catchError((onError) {
       print('There was an error: $onError');
+      return false;
     });
-    return false;
+    return true;
   }
 
   static removeDocument(CollectionReference collection, String title) {
     collection.document(title).delete().then((_) {
       print('Succefully written');
-      return true;
     }).catchError((onError) {
       print('There was an error: $onError');
+      return false;
     });
-    return false;
+    return true;
   }
 
   static Future<bool> checkoutDocument(String title, String category) async {
-    CollectionReference collection = getCollection(category);
+    CollectionReference collection = getCollectionFromString(category);
     DocumentReference doc = collection.document(title);
-
     bool addedDocument;
     bool removedDocument;
 
     await doc.get().then((document) {
-      addedDocument = addDocument(
-          _checkedOut,
-          document['title'],
-          document['year'],
-          document['cast'],
-          document['category'],
-          document['posterURL'],
-          document['location']);
+      addedDocument = addDocument(DBService._checkedOut, document.data);
     });
-
     removedDocument = removeDocument(collection, title);
     return addedDocument && removedDocument;
   }
@@ -108,21 +82,13 @@ class DBService {
     bool addedDocument;
     bool removedDocument;
     await doc.get().then((document) {
-      addedDocument = addDocument(
-          getCollection(document['category']),
-          document['title'],
-          document['year'],
-          document['cast'],
-          document['category'],
-          document['posterURL'],
-          document['location']);
+      addedDocument = addDocument(getCollectionFromString(document['category']), document.data);
     });
-
     removedDocument = removeDocument(_checkedOut, title);
     return addedDocument && removedDocument;
   }
 
-  static CollectionReference getCollection(String collection) {
+  static CollectionReference getCollectionFromString(String collection) {
     switch (collection) {
       case 'checked-out':
         return _checkedOut;
