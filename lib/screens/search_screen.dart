@@ -86,7 +86,9 @@ class _SearchScreenState extends State<SearchScreen> {
     // start search
     if (queryResultSet.length == 0 && value.length == 1) {
       for (int i = 1; i < DBService.collections.length; i++) {
-        SearchService().searchByname(value, DBService.collections[i]).then((QuerySnapshot docs) {
+        SearchService()
+            .searchByname(value, DBService.collections[i])
+            .then((QuerySnapshot docs) {
           for (int i = 0; i < docs.documents.length; i++) {
             queryResultSet.add(docs.documents[i].data);
             setState(() {
@@ -112,6 +114,32 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  initiateSearchByCast(value) {
+    // start search by cast
+    if(value.length == 0) {
+      setState(() {
+        queryResultSet = [];
+        tempSearchStore = [];
+      });
+    }
+    var capitalizedValue = value.toString().toUpperCase();
+
+    if(queryResultSet.length == 0 && value.length > 0) {
+      for (int i = 1; i < DBService.collections.length; i++) {
+        SearchService()
+            .searchByCast(value, DBService.collections[i])
+            .then((QuerySnapshot docs) {
+          for (int i = 0; i < docs.documents.length; i++) {
+            queryResultSet.add(docs.documents[i].data);
+            setState(() {
+              tempSearchStore.add(docs.documents[i].data);
+            });
+          }
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -121,8 +149,10 @@ class _SearchScreenState extends State<SearchScreen> {
           child: TextField(
             onChanged: (value) {
               if (searchByName) initiateSearchByName(value);
-              // else
-              //   initiateSearchByCast(value);
+            },
+            onSubmitted: (value) {
+              if (!searchByName)
+                initiateSearchByCast(value);
             },
             decoration: InputDecoration(
               prefixIcon: Icon(
@@ -144,6 +174,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 if (!searchByName)
                   setState(() {
                     searchByName = !searchByName;
+                    queryResultSet = [];
+                    tempSearchStore = [];
                   });
               },
               child: selectionButton(
@@ -160,6 +192,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 if (searchByName)
                   setState(() {
                     searchByName = !searchByName;
+                    queryResultSet = [];
+                    tempSearchStore = [];
                   });
               },
               child: selectionButton(
