@@ -17,6 +17,8 @@ class DBService {
       Firestore.instance.collection('drama');
   static final CollectionReference _epics =
       Firestore.instance.collection('epics');
+  static final CollectionReference _family =
+      Firestore.instance.collection('family');
   static final CollectionReference _horror =
       Firestore.instance.collection('horror');
   static final CollectionReference _musicals =
@@ -36,6 +38,7 @@ class DBService {
     _crime,
     _drama,
     _epics,
+    _family,
     _horror,
     _musicals,
     _sciFi,
@@ -100,6 +103,8 @@ class DBService {
         return _drama;
       case 'epics':
         return _epics;
+      case 'family':
+        return _family;
       case 'horror':
         return _horror;
       case 'musicals':

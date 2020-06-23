@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_hero/screens/add_screen.dart';
 import 'package:movie_hero/screens/movies_screen.dart';
 import 'package:movie_hero/screens/search_screen.dart';
+import 'package:movie_hero/screens/settings_screen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
   static List<Widget> _widgetOptions = <Widget>[
     MoviesScreen(),
     SearchScreen(),
-    Text('Settings'),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {

@@ -32,6 +32,7 @@ class _AddScreenState extends State<AddScreen> {
     'crime',
     'drama',
     'epics',
+    'family',
     'horror',
     'musicals',
     'sci-fi',
