@@ -3,7 +3,7 @@
 // MIT license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:movie_hero/screens/add_screen.dart';
+import 'package:movie_hero/screens/add_location_screen.dart';
 import 'package:movie_hero/screens/movies_screen.dart';
 import 'package:movie_hero/screens/search_screen.dart';
 import 'package:movie_hero/screens/settings_screen.dart';
@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AddScreen(),
+                  builder: (_) => AddLocationScreen(),
                 ),
               ),
             ),

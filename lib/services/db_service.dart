@@ -31,6 +31,9 @@ class DBService {
   static final CollectionReference _westerns =
       Firestore.instance.collection('westerns');
 
+  static final CollectionReference _locations =
+      Firestore.instance.collection('locations');
+
   static final List<CollectionReference> collections = [
     _checkedOut,
     _actionAdventure,
@@ -47,7 +50,8 @@ class DBService {
     _westerns
   ];
 
-  static bool addDocument(CollectionReference collection, Map<String, dynamic> data) {
+  static addDocument(
+      CollectionReference collection, Map<String, dynamic> data) {
     collection.document(data['title']).setData(data).then((_) {
       print('Succefully written');
     }).catchError((onError) {
@@ -55,6 +59,14 @@ class DBService {
       return false;
     });
     return true;
+  }
+
+  static addLocation(String location) {
+    _locations.document().setData({'location': location})
+        .then((_) => {print('hello')})
+        .catchError((onError) {
+          print('There was an error: $onError');
+        });
   }
 
   static removeDocument(CollectionReference collection, String title) {
@@ -85,7 +97,8 @@ class DBService {
     bool addedDocument;
     bool removedDocument;
     await doc.get().then((document) {
-      addedDocument = addDocument(getCollectionFromString(document['category']), document.data);
+      addedDocument = addDocument(
+          getCollectionFromString(document['category']), document.data);
     });
     removedDocument = removeDocument(_checkedOut, title);
     return addedDocument && removedDocument;
@@ -120,5 +133,9 @@ class DBService {
       default:
         return null;
     }
+  }
+
+  static CollectionReference get locations {
+    return _locations;
   }
 }

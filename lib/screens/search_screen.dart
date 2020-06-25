@@ -122,7 +122,6 @@ class _SearchScreenState extends State<SearchScreen> {
         tempSearchStore = [];
       });
     }
-    var capitalizedValue = value.toString().toUpperCase();
 
     if(queryResultSet.length == 0 && value.length > 0) {
       for (int i = 1; i < DBService.collections.length; i++) {
