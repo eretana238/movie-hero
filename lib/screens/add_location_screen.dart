@@ -41,7 +41,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
               child: Container(
                 height: 400.0,
                 child: StreamBuilder(
-                  stream: DBService.locations.snapshots(),
+                  stream: DBService.locations.orderBy('location',descending: false).snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return const Text('Loading..');
                     return ListView.separated(
@@ -101,8 +101,10 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      if (_formKey.currentState.validate())
+                      if (_formKey.currentState.validate()) {
                         DBService.addLocation(_locationController.text);
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }
                     },
                     child: Icon(
                       Icons.add,

@@ -19,6 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
   var tempSearchStore = [];
 
   bool searchByName = true;
+  final _searchController = TextEditingController();
 
   Widget resultCard(context, document) {
     return Padding(
@@ -28,6 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(50),
           onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
             Movie movie = new Movie(document['category'], document['title'],
                 document['posterURL'], document['cast'], document['location']);
             Navigator.push(
@@ -147,7 +149,8 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: TextField(
             onChanged: (value) {
-              if (searchByName) initiateSearchByName(value);
+              if (searchByName) 
+                initiateSearchByName(value);
             },
             onSubmitted: (value) {
               if (!searchByName)
@@ -163,6 +166,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
+            controller: _searchController,
           ),
         ),
         Row(

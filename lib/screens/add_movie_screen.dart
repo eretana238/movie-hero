@@ -175,7 +175,11 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                   child: Center(
                     child: RaisedButton(
                       onPressed: () {
-                        if (_formKey.currentState.validate()) _submit();
+                        if (_formKey.currentState.validate()) {
+                          _submit();
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
