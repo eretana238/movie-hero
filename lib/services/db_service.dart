@@ -79,6 +79,14 @@ class DBService {
     return true;
   }
 
+  static removeLocation(String location) {
+    _locations.document(location).delete()
+        .then((_) => {print('hello')})
+        .catchError((onError) {
+          print('There was an error: $onError');
+        });
+  }
+
   static Future<bool> checkoutDocument(String title, String category) async {
     CollectionReference collection = getCollectionFromString(category);
     DocumentReference doc = collection.document(title);

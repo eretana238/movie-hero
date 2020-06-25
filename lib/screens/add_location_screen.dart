@@ -88,8 +88,10 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   ),
                 ),
                 RaisedButton(
-                  onPressed: () =>
-                      DBService.addLocation(_locationController.text),
+                  onPressed: () {
+                    if(_locationController.text != '') DBService.addLocation(_locationController.text);
+                  },
+                      
                   child: Icon(
                     Icons.add,
                   ),
