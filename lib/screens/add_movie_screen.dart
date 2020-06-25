@@ -43,18 +43,21 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
   // fetches information from movie database api, and adds it in the movie hero database
   Future<void> _submit() async {
     isSubmitting = true;
-    dynamic movieData = await _httpService.requestRapidAPI('${_titleController.text}', '${_yearController.text}');
-    if(movieData == null)
+    dynamic movieData = await _httpService.requestRapidAPI(
+        '${_titleController.text}', '${_yearController.text}');
+    if (movieData == null)
       setState(() {
         isSubmitting = false;
       });
-    List<String> castData = await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
-    CollectionReference collection = DBService.collections[genres.indexOf(dropdownValue) + 1];
+    List<String> castData =
+        await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
+    CollectionReference collection =
+        DBService.collections[genres.indexOf(dropdownValue) + 1];
     Movie movie = new Movie.fromJSON(movieData);
     movie.setCast = castData;
     movie.setCategory = dropdownValue;
     movie.setLocation = widget.location;
-    DBService.addDocument(collection,movie.toJson());
+    DBService.addDocument(collection, movie.toJson());
     _formKey.currentState?.reset();
     setState(() {
       isSubmitting = false;
@@ -62,7 +65,7 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     // Clean up the controller when the widget is disposed.
     _titleController.dispose();
     _yearController.dispose();
@@ -72,7 +75,6 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff101010),
       appBar: AppBar(
         backgroundColor: Color(0xff101010),
@@ -89,104 +91,106 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
       ),
       body: Form(
         key: _formKey,
-        child: Container(
-          height: 400.0,
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 19.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                autocorrect: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.title,
-                  ),
-                  contentPadding: EdgeInsets.only(left: 25.0),
-                  hintText: 'Add title',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+        child: SingleChildScrollView(
+          child: Container(
+            height: 400.0,
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 19.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20.0,
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter title';
-                  }
-                  return null;
-                },
-                controller: _titleController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.access_time,
-                  ),
-                  contentPadding: EdgeInsets.only(left: 25.0),
-                  hintText: 'Add year (optional)',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                controller: _yearController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-                child: Center(
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.white),
-                    underline: Container(
-                      height: 2,
-                      // color: Theme.of(context).primaryColor,
+                TextFormField(
+                  autocorrect: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.title,
                     ),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                    items:
-                        genres.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Add title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter title';
+                    }
+                    return null;
+                  },
+                  controller: _titleController,
                 ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
-                child: Center(
-                  child: RaisedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) _submit();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('ADD'),
-                        Icon(
-                          Icons.add,
-                        ),
-                      ],
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.access_time,
+                    ),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Add year (optional)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  controller: _yearController,
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                  child: Center(
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: Colors.white),
+                      underline: Container(
+                        height: 2,
+                        // color: Theme.of(context).primaryColor,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items:
+                          genres.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
-              )
-            ],
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) _submit();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('ADD'),
+                          Icon(
+                            Icons.add,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
