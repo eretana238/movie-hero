@@ -175,8 +175,8 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                     child: RaisedButton(
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          _submit();
                           FocusScope.of(context).requestFocus(FocusNode());
+                          _submit();
                           _formKey.currentState.reset();
                         }
                       },

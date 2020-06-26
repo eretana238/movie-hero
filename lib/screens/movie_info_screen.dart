@@ -94,41 +94,71 @@ class _MovieInfoScreenState extends State<MovieInfoScreen> {
               /*
               * Raised button
               */
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 19.0),
-                child: Center(
-                  child: RaisedButton(
-                    color: isCheckedOut
-                        ? Theme.of(context).primaryColor
-                        : Colors.red,
-                    onPressed: () {
-                      if (isCheckedOut)
-                        DBService.checkinDocument(widget.movie.title);
-                      else
-                        DBService.checkoutDocument(
-                            widget.movie.title, widget.movie.category);
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 24.0, horizontal: 19.0),
+                    child: Center(
+                      child: RaisedButton(
+                        color: isCheckedOut
+                            ? Theme.of(context).primaryColor
+                            : Colors.red,
+                        onPressed: () {
+                          if (isCheckedOut)
+                            DBService.checkinDocument(widget.movie.title);
+                          else
+                            DBService.checkoutDocument(
+                                widget.movie.title, widget.movie.category);
 
-                      setState(() {
-                        isCheckedOut = !isCheckedOut;
-                      });
-                      _showMyDialog();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        isCheckedOut ? Text('CHECKIN') : Text('CHECKOUT'),
-                        SizedBox(
-                          width: 10.0,
+                          setState(() {
+                            isCheckedOut = !isCheckedOut;
+                          });
+                          _showMyDialog();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            isCheckedOut ? Text('CHECKIN') : Text('CHECKOUT'),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Icon(
+                              isCheckedOut
+                                  ? Icons.subdirectory_arrow_left
+                                  : Icons.subdirectory_arrow_right,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          isCheckedOut
-                              ? Icons.subdirectory_arrow_left
-                              : Icons.subdirectory_arrow_right,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 24.0, horizontal: 19.0),
+                    child: Center(
+                      child: RaisedButton(
+                        color: Colors.red,
+                        onPressed: () {
+                          DBService.removeDocument(DBService.getCollectionFromString(widget.movie.category), widget.movie.title);
+                          Navigator.of(context).pop();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text('Delete'),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Icon(
+                              Icons.delete,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Positioned(
                 top: 0.0,
