@@ -58,7 +58,6 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
     movie.setCategory = dropdownValue;
     movie.setLocation = widget.location;
     DBService.addDocument(collection, movie.toJson());
-    _formKey.currentState?.reset();
     setState(() {
       isSubmitting = false;
     });
@@ -178,7 +177,7 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                         if (_formKey.currentState.validate()) {
                           _submit();
                           FocusScope.of(context).requestFocus(FocusNode());
-                          
+                          _formKey.currentState.reset();
                         }
                       },
                       child: Row(

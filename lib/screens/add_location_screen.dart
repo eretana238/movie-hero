@@ -102,8 +102,9 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
                   RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        DBService.addLocation(_locationController.text);
                         FocusScope.of(context).requestFocus(FocusNode());
+                        DBService.addLocation(_locationController.text);
+                        _formKey.currentState.reset();
                       }
                     },
                     child: Icon(
