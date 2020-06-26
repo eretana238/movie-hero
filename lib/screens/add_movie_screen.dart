@@ -45,19 +45,17 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
     isSubmitting = true;
     dynamic movieData = await _httpService.requestRapidAPI(
         '${_titleController.text}', '${_yearController.text}');
-    if (movieData == null)
-      setState(() {
-        isSubmitting = false;
-      });
-    List<String> castData =
-        await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
-    CollectionReference collection =
-        DBService.collections[genres.indexOf(dropdownValue) + 1];
-    Movie movie = new Movie.fromJSON(movieData);
-    movie.setCast = castData;
-    movie.setCategory = dropdownValue;
-    movie.setLocation = widget.location;
-    DBService.addDocument(collection, movie.toJson());
+    if (movieData != null) {
+      List<String> castData =
+          await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
+      CollectionReference collection =
+          DBService.collections[genres.indexOf(dropdownValue) + 1];
+      Movie movie = new Movie.fromJSON(movieData);
+      movie.setCast = castData;
+      movie.setCategory = dropdownValue;
+      movie.setLocation = widget.location;
+      DBService.addDocument(collection, movie.toJson());
+    }
     setState(() {
       isSubmitting = false;
     });
@@ -173,10 +171,10 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
                   child: Center(
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: () async{
                         if (_formKey.currentState.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          _submit();
+                          await _submit();
                           _formKey.currentState.reset();
                         }
                       },
