@@ -19,6 +19,7 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
   final _formKey = GlobalKey<FormState>();
   final HttpService _httpService = HttpService.getInstance();
   bool isSubmitting = false;
+  bool isMovieFound = true;
 
   final _titleController = TextEditingController();
   final _yearController = TextEditingController();
@@ -40,12 +41,21 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
     'war',
     'westerns'
   ];
+
+  Widget _buildErrorMessage() {
+    return isMovieFound ? null : Text(
+      'Error: Movie not found please try again.',
+      style: TextStyle(
+        color: Colors.red
+      ),
+    );
+  }
   // fetches information from movie database api, and adds it in the movie hero database
   Future<void> _submit() async {
     isSubmitting = true;
     dynamic movieData = await _httpService.requestRapidAPI(
         '${_titleController.text}', '${_yearController.text}');
-    if (movieData != null) {
+    if (movieData['Search'] != null) {
       List<String> castData =
           await _httpService.requestImdb(movieData['Search'][0]['imdbID']);
       CollectionReference collection =
@@ -55,10 +65,17 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
       movie.setCategory = dropdownValue;
       movie.setLocation = widget.location;
       DBService.addDocument(collection, movie.toJson());
+      setState(() {
+        isSubmitting = false;
+        isMovieFound = true;
+      });
+    } 
+    else {
+      setState(() {
+        isSubmitting = false;
+        isMovieFound = false;
+      });
     }
-    setState(() {
-      isSubmitting = false;
-    });
   }
 
   @override
@@ -171,11 +188,15 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
                   child: Center(
                     child: RaisedButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
                           await _submit();
-                          _formKey.currentState.reset();
+                          setState(() {
+                            _titleController.clear();
+                            _yearController.clear();
+                            _formKey.currentState.reset();
+                          });
                         }
                       },
                       child: Row(
@@ -189,7 +210,10 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
                       ),
                     ),
                   ),
-                )
+                ),
+                Center(
+                  child: _buildErrorMessage(),
+                ),
               ],
             ),
           ),
