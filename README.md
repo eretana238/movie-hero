@@ -4,18 +4,31 @@ An app that provides a way to manage all DVD/VHS/BluRay movies. Sole purpose is 
 
 ## Features
 
-- Suggests movie of the day to watch 
 - Stores movies in database with complete info including cast, genre, title, year, poster url, etc. 
-- Ability to search movies based on a single specification such as members of cast or title.
+- Search engine that finds a movie based on a single specification such as members of cast or title.
 - Demonstrates a list of recently "checked out" movies.
 - Shows movies by genre in the movies screen.
 - Clean/modern UI
 
-## Screenshots
+## Prototype
 
-Prototype.
+Home Screen
 
-<img src="ss/Movies.png" height="400px" /> 
-<img src="ss/Movie-info.png" height="400px" /><img src="ss/Movie-info-2.png" height="400px" />
-<img src="ss/Search.png" height="400px" /><img src="ss/Add.png" height="400px" />
+<img src="ss/Movies.png" height="300px" />
+
+Movie Info Screen
+
+<img src="ss/Movie-info.png" height="300px" />
+
+Movie Info Screen 2
+
+<img src="ss/Movie-info-2.png" height="300px" />
+
+Movie Search Engine Screen
+
+<img src="ss/Search.png" height="300px" />
+
+Adding Movie Screen
+
+<img src="ss/Add.png" height="300px" />
 
